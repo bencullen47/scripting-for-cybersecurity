@@ -5,3 +5,7 @@ This repository contains my practical work for the Scripting for Cybersecurity m
 ## Labs
 
 - Lab 01 - Development Environment
+Complete
+- Lab 02 - Introduction to the Linux Command Line
+In Progress
+
