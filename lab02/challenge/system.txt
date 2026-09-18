@@ -1,0 +1,3 @@
+codespaces-09a9cb
+/bin/bash
+/home/codespace

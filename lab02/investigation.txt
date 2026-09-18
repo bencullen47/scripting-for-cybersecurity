@@ -1,0 +1,9 @@
+Current User: codespace
+Hostname: codespaces-09a9cb
+Current Directory: /workspaces/scripting-for-cybersecurity/lab02
+Current Shell: /bin/bash
+Home Directory: /home/codespace
+Python3 Location: /home/codespace/.python/current/bin/python3
+Bash Location: /usr/bin/bash
+Environment Variables: 92
+SSH files in /usr/bin: 7
