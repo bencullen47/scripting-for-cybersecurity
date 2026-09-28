@@ -1,0 +1,26 @@
+File Triage Report
+Total Files: 23
+Total Directories: 10
+Python Files: 2
+Shell Scripts: 1
+Log Files: 4
+Configuration Files: 3
+Empty Files: 1
+Archives: 1
+
+Files Containing "admin":
+./lab04-data/logs/auth.log
+./lab04-data/logs/access.log
+./lab04-data/backups/users.old
+./lab04-data/evidence/notes.txt
+./triage-report.txt
+
+Detected File Types in Evidence:
+lab04-data/evidence/archive.zip:    Zip archive data, at least v2.0 to extract, compression method=deflate
+lab04-data/evidence/empty.bin:      empty
+lab04-data/evidence/image.png:      PNG image data, 1 x 1, 8-bit/color RGBA, non-interlaced
+lab04-data/evidence/notes.txt:      ASCII text
+lab04-data/evidence/passwords.txt:  ASCII text
+lab04-data/evidence/readme.md:      ASCII text
+lab04-data/evidence/suspicious.dat: ELF, unknown class 154
+
