@@ -1,0 +1,10 @@
+Total failed password attempts: 45
+Top attacking IP: ssh2
+Top 3 source IPs:
+Today is 2026-10-05
+auth.log has 60 lines
+There were 45 failed login attempts
+Top 3 failed-login sources:
+15 203.0.113.10 14 198.51.100.24 8 198.51.100.77
+Top 3 targeted usernames:
+     45 port
