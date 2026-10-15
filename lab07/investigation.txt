@@ -1,0 +1,36 @@
+===== alice =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== bob =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== eve =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== david =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== admin =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== root =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== backup =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== oracle =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
+===== nobody =====
+bash: ./validate_login.sh: No such file or directory
+Exit code: 127
+
