@@ -1,0 +1,147 @@
+Lab 8 investigation
+
+## Exercise 3.1 — IP table
+
+$ ./check_ip.sh case/logs/auth.log 203.0.113.10
+FOUND: 203.0.113.10 appears 15 time(s) in case/logs/auth.log
+exit:0
+
+$ ./check_ip.sh case/logs/access.log 203.0.113.10
+NOT FOUND: 203.0.113.10 does not appear in case/logs/access.log
+exit:3
+
+$ ./check_ip.sh case/logs/firewall.log 203.0.113.10
+FOUND: 203.0.113.10 appears 1 time(s) in case/logs/firewall.log
+exit:0
+
+$ ./check_ip.sh case/logs/auth.log 198.51.100.24
+FOUND: 198.51.100.24 appears 14 time(s) in case/logs/auth.log
+exit:0
+
+$ ./check_ip.sh case/logs/access.log 198.51.100.24
+FOUND: 198.51.100.24 appears 12 time(s) in case/logs/access.log
+exit:0
+
+$ ./check_ip.sh case/logs/firewall.log 198.51.100.24
+FOUND: 198.51.100.24 appears 1 time(s) in case/logs/firewall.log
+exit:0
+
+$ ./check_ip.sh case/logs/auth.log 203.0.113.200
+FOUND: 203.0.113.200 appears 5 time(s) in case/logs/auth.log
+exit:0
+
+$ ./check_ip.sh case/logs/access.log 203.0.113.200
+NOT FOUND: 203.0.113.200 does not appear in case/logs/access.log
+exit:3
+
+$ ./check_ip.sh case/logs/firewall.log 203.0.113.200
+FOUND: 203.0.113.200 appears 1 time(s) in case/logs/firewall.log
+exit:0
+
+IP               auth.log   access.log   firewall.log
+203.0.113.10     FOUND     NOT FOUND   FOUND
+198.51.100.24    FOUND     FOUND       FOUND
+203.0.113.200   FOUND     NOT FOUND   FOUND
+
+## Exercise 3.2 / 3.3
+
+$ ./check_ip.sh case/logs/auth.log 203.0.113.999
+NOT FOUND: 203.0.113.999 does not appear in case/logs/auth.log
+exit:3
+
+$ ./check_ip.sh case/logs/missing.log 203.0.113.10
+Error: 'case/logs/missing.log' not found
+exit:2
+
+It makes sense for 'not found' to be a different exit code from 'error' because a missing file is a failure to read the target, while a valid file that simply contains no match is a legitimate negative result. A caller can distinguish a search that returned no hits from a broken or missing input source.
+
+## Exercise 3.4
+
+$ grep -c "203.0.113.1" case/logs/auth.log
+18
+
+$ ./check_ip.sh case/logs/auth.log 203.0.113.1
+NOT FOUND: 203.0.113.1 does not appear in case/logs/auth.log
+exit:3
+
+`grep -c` counts any substring match in the log, so '203.0.113.1' is found inside longer addresses such as 203.0.113.10 and 203.0.113.15. The `check_ip.sh` script uses `grep -qwF`, so it matches only the exact IP as a whole word.
+
+## Exercise 3.5 / 7 challenge
+
+$ ./investigate.sh case/logs/auth.log 198.51.100.77
+IP: 198.51.100.77
+Occurrences in log: 8
+Failed password attempts: 8
+Risk: MEDIUM
+Firewall entries: none
+IOC status: not listed in intel/iocs.txt
+exit:0
+
+$ ./investigate.sh case/logs/auth.log 203.0.113.200
+IP: 203.0.113.200
+Occurrences in log: 5
+Failed password attempts: 5
+Risk: MEDIUM
+Firewall entries:
+BLOCK 203.0.113.200 -> 10.0.0.30:3389
+IOC status: listed in intel/iocs.txt
+exit:0
+
+$ ./investigate.sh case/logs/access.log 203.0.113.77
+IP: 203.0.113.77
+Occurrences in log: 12
+Failed password attempts: 0
+Risk: NONE
+Firewall entries: none
+IOC status: not listed in intel/iocs.txt
+exit:0
+
+$ ./investigate.sh case/logs/auth.log admin
+Username: admin
+Status: LEGACY
+Failed logins: 17
+Accepted logins: 0
+Assessment: investigate
+exit:0
+
+$ ./investigate.sh case/logs/auth.log alice
+Username: alice
+Status: CURRENT
+Failed logins: 0
+Accepted logins: 6
+Assessment: no failed logins
+exit:0
+
+$ ./investigate.sh case/logs/missing.log admin
+Error: 'case/logs/missing.log' not found
+exit:2
+
+## Answers to challenge questions
+
+1. 198.51.100.77 made 8 failed login attempts. It is not in the IOC list and it is not in the firewall log. This shows that an IOC list alone can miss active attackers or newly observed addresses, so it should be used as a lead rather than the only source of truth.
+
+2. 203.0.113.200 is in the IOC list. The firewall blocked it to port 3389, which is the default port for RDP (Remote Desktop Protocol). In auth.log it is attacking SSH (the log lines show 'port 51029 ssh2'), so the firewall is blocking the RDP service, while the auth log shows SSH credential attacks.
+
+3. 203.0.113.77 appears in the web log but not the auth log. The requests include GET /admin, GET /assets/app.js, GET /wp-login.php, and /index.html, with some 403 and 200 responses and a tool signature such as 'sqlmap/1.8' or 'curl/8.4.0'. That is consistent with web probing and enumeration of admin/login paths rather than SSH login activity.
+
+## Additional evidence from the collected logs
+
+$ ./check_username.sh case/logs/auth.log root
+root: 10 failed and 0 accepted login(s) — investigate HIGH RISK
+exit:0
+
+$ ./check_username.sh case/logs/auth.log admin
+admin: 17 failed and 0 accepted login(s) — investigate HIGH RISK
+exit:0
+
+$ ./check_username.sh case/logs/auth.log alice
+alice: 6 successful login(s) only
+exit:0
+
+$ ./check_username.sh case/logs/auth.log charlie
+charlie: 1 successful login(s) only
+exit:0
+
+$ ./check_username.sh case/logs/auth.log frank
+frank: no activity found
+exit:3

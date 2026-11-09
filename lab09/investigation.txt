@@ -1,0 +1,26 @@
+Lab 9 investigation
+
+1. Distinct indicators vs indicator lines
+
+The auth log contains the most distinct indicators because it is the main SSH attack log and includes the highest number of indicator entries such as 203.0.113.10, 198.51.100.24, 203.0.113.200, 198.51.100.77, and others. The firewall log may contain fewer distinct values but can have more repeated indicator lines if the same address is logged multiple times. The two values differ because "distinct" asks how many different indicators appear, while "lines" counts every match occurrence, including repeats.
+
+2. Files flagged and why
+
+The suspicious file in case/evidence was the main mismatch: suspicious.dat is a .dat file but its detected type is not a normal data file, so it is flagged when the extension check compares what the file name claims against what the file content reveals. The script also identifies mismatches between extension and content for any file that was not consistent with its extension, such as a binary file unexpectedly labelled as text.
+
+3. Missing log file
+
+The survey does not include case/nested/archive/old.log because the loops only look in the top-level directories case/evidence, case/scripts, and case/logs, and the nested archive is deeper than those globs. The glob pattern case/logs/*.log only reaches files directly under case/logs, not files in subdirectories.
+
+4. Would file_survey.sh need to change for a new case/logs/vpn.log?
+
+No. The script iterates over all files matching case/logs/*.log, so a new log added to that directory would be picked up automatically. The only time it would need a change is if the new log were nested in another directory or if the script had a hardcoded file list instead of a glob.
+
+5. Attack summary
+
+The collection shows repeated SSH password attack activity from the external IPs 203.0.113.10, 198.51.100.24, 203.0.113.200, and 198.51.100.77. The attackers targeted SSH login services and a smaller set of web-access paths, including admin and wp-login probes. The workstation also contains suspicious evidence including a .dat file and validation of the IOC list, which points to active reconnaissance and credential attacks rather than legitimate use. The overall picture is a multi-vector intrusion campaign focused on login abuse, web enumeration, and data staging on the victim host.
+
+Additional notes
+- The three logs are access.log, auth.log, and firewall.log.
+- The IOC list is a compact list of suspect IPs, hashes, and domains.
+- The file survey script intentionally skips non-regular files and uses file-type detection to flag mismatches.

@@ -1,0 +1,64 @@
+FILE: case/evidence/archive.zip
+  size:  etc bytes
+  type: Zip archive data
+  status: OK
+FILE: case/evidence/empty.bin
+  size: 0 bytes
+  type: empty
+  status: OK
+FILE: case/evidence/image.png
+  size:  etc bytes
+  type: PNG image data
+  status: OK
+FILE: case/evidence/notes.txt
+  size:  etc bytes
+  type: ASCII text
+  lines: etc
+  status: OK
+FILE: case/evidence/passwords.txt
+  size:  etc bytes
+  type: ASCII text
+  lines: etc
+  status: OK
+FILE: case/evidence/readme.md
+  size:  etc bytes
+  type: ASCII text
+  lines: etc
+  status: OK
+FILE: case/evidence/suspicious.dat
+  size:  etc bytes
+  type: data
+  status: !! expected data, detected: data
+
+FILE: case/scripts/check.sh
+  size:  etc bytes
+  type: POSIX shell script executable
+  status: OK
+FILE: case/scripts/report.py
+  size:  etc bytes
+  type: Python script
+  status: OK
+FILE: case/scripts/scan.py
+  size:  etc bytes
+  type: Python script
+  status: OK
+
+FILE: case/logs/access.log
+  size:  etc bytes
+  type: ASCII text
+  lines: etc
+  IOC matches: 2
+FILE: case/logs/auth.log
+  size:  etc bytes
+  type: ASCII text
+  lines: etc
+  IOC matches: 5
+FILE: case/logs/firewall.log
+  size:  etc bytes
+  type: ASCII text
+  lines: etc
+  IOC matches: 3
+
+Files surveyed: 13
+Files flagged: 1
+Total IOC matches: 10
